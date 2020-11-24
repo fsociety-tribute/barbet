@@ -33,9 +33,7 @@
 #define _LINUX_FTS_I2C_H_
 
 #include <linux/device.h>
-#if IS_ENABLED(CONFIG_TOUCHSCREEN_HEATMAP)
 #include <linux/input/heatmap.h>
-#endif
 #include <linux/pm_qos.h>
 #include <linux/input/touch_offload.h>
 #include <drm/drm_panel.h>
