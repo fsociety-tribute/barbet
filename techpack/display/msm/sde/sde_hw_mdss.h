@@ -678,13 +678,11 @@ struct sde_hw_autorefresh {
  * @intf_idx:		Interface block index
  * @rd_ptr_frame_count:	num frames sent since enabling interface
  * @wr_ptr_line_count:	current line within pp fifo (wr ptr)
- * @intf_frame_count:	num frames read from intf
  */
 struct sde_hw_pp_vsync_info {
 	u32 pp_idx;
 	u32 intf_idx;
 	u32 wr_ptr_line_count;
-	u32 intf_frame_count;
 };
 
 #endif  /* _SDE_HW_MDSS_H */
