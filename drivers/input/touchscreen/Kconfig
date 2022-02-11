@@ -1390,6 +1390,4 @@ source "drivers/input/touchscreen/nt36xxx/Kconfig"
 
 source "drivers/input/touchscreen/fts_touch/Kconfig"
 
-source "drivers/input/touchscreen/sec_touch/Kconfig"
-
 endif
