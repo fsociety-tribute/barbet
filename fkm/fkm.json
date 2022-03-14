@@ -1,11 +1,11 @@
 {
   "kernel": {
     "name": "fsociety tribute kernel",
-    "version": "",
-    "link": "",
-    "changelog_url": "https://github.com/fsociety-tribute/redbull/raw/a12-rebase/fkm/changelog",
-    "date": "2022-01-01",
-    "sha1": ""
+    "version": "stable #1.43",
+    "link": "https://sourceforge.net/projects/fsociety-tribute/files/pixel5a-5g/fsociety-tribute-stable%231.43.zip/download",
+    "changelog_url": "https://github.com/fsociety-tribute/barbet/raw/a12-rebase/fkm/changelog",
+    "date": "2022-03-14",
+    "sha1": "ea5dd1d0cba4fb7896c584549d6a71e8e3dd830d"
   },
   "support": {
     "link": "https://t.me/fsociety_tribute_barbet"
