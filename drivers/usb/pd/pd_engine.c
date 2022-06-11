@@ -2281,7 +2281,8 @@ struct usbpd *usbpd_create(struct device *parent)
 		}
 
 		pd->hw_reg_nb.notifier_call = ext_boost_changed;
-		ret = regulator_register_notifier(pd->ext_vbus, &pd->hw_reg_nb);
+		ret = devm_regulator_register_notifier(pd->ext_vbus,
+						       &pd->hw_reg_nb);
 		if (ret) {
 			dev_err(&pd->dev, "Couldn't register ext_boost notifier\n");
 			goto exit_debugfs;
@@ -2298,13 +2299,13 @@ struct usbpd *usbpd_create(struct device *parent)
 	if (IS_ERR(pd->extcon)) {
 		dev_err(&pd->dev, "extcon allocation failed\n");
 		ret = PTR_ERR(pd->extcon);
-		goto unreg_hw_reg_nb;
+		goto exit_debugfs;
 	}
 
 	ret = devm_extcon_dev_register(parent, pd->extcon);
 	if (ret < 0) {
 		dev_err(&pd->dev, "failed to register extcon device");
-		goto unreg_hw_reg_nb;
+		goto exit_debugfs;
 	}
 
 	/* Support reporting polarity and speed via properties */
@@ -2323,7 +2324,7 @@ struct usbpd *usbpd_create(struct device *parent)
 	if (!pd->wq) {
 		dev_err(&pd->dev, "workqueue creation failed\n");
 		ret = -ENOMEM;
-		goto unreg_hw_reg_nb;
+		goto exit_debugfs;
 	}
 
 	pd->default_src_cap = true;
@@ -2435,11 +2436,6 @@ put_psy_usb:
 	power_supply_put(pd->usb_psy);
 del_wq:
 	destroy_workqueue(pd->wq);
-unreg_hw_reg_nb:
-	if (pd->hw_reg_nb.notifier_call) {
-		regulator_unregister_notifier(pd->ext_vbus, &pd->hw_reg_nb);
-		pd->hw_reg_nb.notifier_call = NULL;
-	}
 exit_debugfs:
 #ifdef CONFIG_DEBUG_FS
 	pd_engine_debugfs_exit(pd);
@@ -2472,10 +2468,6 @@ void usbpd_destroy(struct usbpd *pd)
 		power_supply_put(pd->wireless_psy);
 	power_supply_put(pd->usb_psy);
 	destroy_workqueue(pd->wq);
-	if (pd->hw_reg_nb.notifier_call) {
-		regulator_unregister_notifier(pd->ext_vbus, &pd->hw_reg_nb);
-		pd->hw_reg_nb.notifier_call = NULL;
-	}
 #ifdef CONFIG_DEBUG_FS
 	pd_engine_debugfs_exit(pd);
 #endif
