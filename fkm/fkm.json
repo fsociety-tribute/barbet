@@ -1,0 +1,13 @@
+{
+  "kernel": {
+    "name": "fsociety tribute kernel",
+    "version": "stable #1.57",
+    "link": "https://sourceforge.net/projects/fsociety-tribute/files/pixel5a-5g/fsociety-tribute-stable%231.57.zip/download",
+    "changelog_url": "https://github.com/fsociety-tribute/barbet/raw/a12-rebase/fkm/changelog",
+    "date": "2022-06-12",
+    "sha1": "068d83f648a9b6c6fdaff755bc7d36dae83798bb"
+  },
+  "support": {
+    "link": "https://t.me/fsociety_tribute_barbet"
+  }
+}
