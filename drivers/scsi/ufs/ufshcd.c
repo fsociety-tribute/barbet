@@ -871,35 +871,6 @@ static void ufshcd_cmd_log_init(struct ufs_hba *hba)
 	}
 }
 
-static void __ufshcd_cmd_log(struct ufs_hba *hba, char *str, char *cmd_type,
-			     unsigned int tag, u8 cmd_id, u8 idn, u8 lun,
-			     sector_t lba, u32 transfer_len)
-{
-	struct ufshcd_cmd_log_entry *entry;
-
-	if (!hba->cmd_log.entries)
-		return;
-
-	entry = &hba->cmd_log.entries[hba->cmd_log.pos];
-	entry->lun = lun;
-	entry->str = str;
-	entry->cmd_type = cmd_type;
-	entry->cmd_id = cmd_id;
-	entry->lba = lba;
-	entry->transfer_len = transfer_len;
-	entry->idn = idn;
-	entry->doorbell = ufshcd_readl(hba, REG_UTP_TRANSFER_REQ_DOOR_BELL);
-	entry->tag = tag;
-	entry->tstamp = ktime_get();
-	entry->outstanding_reqs = hba->outstanding_reqs;
-	entry->seq_num = hba->cmd_log.seq_num;
-	hba->cmd_log.seq_num++;
-	hba->cmd_log.pos =
-			(hba->cmd_log.pos + 1) % UFSHCD_MAX_CMD_LOGGING;
-
-	ufshcd_add_command_trace(hba, entry);
-}
-
 static void ufshcd_cmd_log(struct ufs_hba *hba, char *str, char *cmd_type,
 	unsigned int tag, u8 cmd_id, u8 idn)
 {
@@ -1018,9 +989,6 @@ static inline void ufshcd_cond_add_cmd_trace(struct ufs_hba *hba,
 			idn = hba->dev_cmd.query.request.upiu_req.idn;
 		}
 	}
-
-	__ufshcd_cmd_log(hba, (char *) str, cmd_type, tag, cmd_id, idn,
-			 lrbp->lun, lba, transfer_len);
 }
 #else
 static inline void ufshcd_cond_add_cmd_trace(struct ufs_hba *hba,
